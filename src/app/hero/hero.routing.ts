@@ -4,18 +4,18 @@ import {
     RouterModule
 } from '@angular/router';
 
-import { HeroComponent } from './hero.component';
+import { HeroesComponent } from './heroes.component';
 import { HeroListComponent } from './hero-list.component';
 import { HeroDetailComponent } from './hero-detail.component';
 
 const routes: Routes = [{
     path: '',
-    component: HeroComponent,
+    component: HeroesComponent,
     children: [
         { path: '', component: HeroListComponent },
-        { path: 'detail', component: HeroDetailComponent },
+        { path: 'detail/:id', component: HeroDetailComponent },
     ]
-}];
+}, ];
 
 export const routing: ModuleWithProviders = RouterModule.forChild(routes);
 
