@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-// import './rxjs-operators';
+import './rxjs-operators'; //全局
 
 @Component({
     selector: 'app-root',
@@ -9,4 +9,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
     title = 'app works!';
     good = "godgoodgodd";
+
 }

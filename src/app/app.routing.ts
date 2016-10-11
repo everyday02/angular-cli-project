@@ -2,14 +2,16 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { CrisisCenterComponent } from './crisis/crisis-center.component'; //非懒加载模块
+import { MapComponent } from './map/map.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'crisis', pathMatch: 'full' },
     { path: 'heroes', loadChildren: 'app/hero/hero.module#HeroModule' },
     { path: 'monitor', loadChildren: 'app/monitor/monitor.module#MonitorModule' },
     { path: 'crisis', component: CrisisCenterComponent },
+    { path: 'map', component: MapComponent },
 ];
-// 
+
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);
 
 

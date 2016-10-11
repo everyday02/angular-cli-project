@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
 
 import { Hero } from './hero';
 
@@ -9,7 +8,7 @@ import { Hero } from './hero';
 export class HeroService {
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
-    private heroesUrl = 'app/heroes'; // URL to web api
+    private heroesUrl = 'app/heroes'; // URL to web api 此处应为hero-data.ts里面的变量heroes
 
     constructor(private http: Http) {}
 
