@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { MapService } from './map.service';
 import {PubSubService} from '../pubsubService';
+import { LoadingService } from '../shared/loading.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 declare var BMap;
@@ -14,15 +15,17 @@ declare var BMap;
 export class MapComponent implements OnInit{
 
 	users;
-	  showLoader = false;
-	  _pubsub:PubSubService;
+	  // showLoader = false;
+	  // _pubsub:PubSubService;
+	  // _loading: LoadingService;
 	  
-	  constructor(public http:Http, public pubsub: PubSubService) {
-	    this._pubsub = pubsub;
+	  constructor(public http:Http) {
 	  }
 	   ngOnInit() {
-	     this._pubsub.beforeRequest.subscribe(data => this.showLoader = true);
-	     this._pubsub.afterRequest.subscribe(data => this.showLoader = false);
+	     // this._pubsub.beforeRequest.subscribe(data => this.showLoader = true);
+	     // this._pubsub.afterRequest.subscribe(data => this.showLoader = false);
+	     // this._loading.beforeRequest.subscribe(data => this.showLoader = true);
+	     // this._loading.afterRequest.subscribe(data => this.showLoader = false);
 	     
 	    this.reload();
 	    

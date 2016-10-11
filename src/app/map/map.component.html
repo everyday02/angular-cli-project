@@ -1,4 +1,5 @@
 <button (click)="reload()">Refrsh data</button>
+<app-loading></app-loading>
 <div *ngIf="showLoader" style="padding:5px; font-weight:bold">Getting Users</div>
 <ul *ngIf="!showLoader">
   <li *ngFor="let item of users; let i = index">
