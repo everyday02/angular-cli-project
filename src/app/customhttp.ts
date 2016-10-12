@@ -2,22 +2,22 @@ import { Injectable } from '@angular/core';
 import { Http, Request, RequestOptionsArgs, Response, RequestOptions, ConnectionBackend, Headers } from '@angular/http';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
-import { PubSubService } from './pubsubService';
-import { LoadingService } from './shared/loading.service';
+import { PubSubService } from './shared/pubsub.service';
 @Injectable()
 export class CustomHttp extends Http {
-    _loading: LoadingService
-    constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, loading: LoadingService) {
+    _pubsub: PubSubService;
+    constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, pubsub: PubSubService) {
         super(backend, defaultOptions);
-        this._loading = loading;
+        this._pubsub = pubsub;
     }
-    request(url: string | Request, options ? : RequestOptionsArgs): Observable<Response> {
+    request(url: string | Request, options ? : RequestOptionsArgs): Observable < Response > {
         console.log("good");
         return this.intercept(super.request(url, options));
     }
     get(url: string, options ? : RequestOptionsArgs): Observable < Response > {
         return this.intercept(super.get(url, options));
     }
+    
     post(url: string, body: string, options ? : RequestOptionsArgs): Observable < Response > {
         return this.intercept(super.post(url, body, this.getRequestOptionArgs(options)));
     }
@@ -25,7 +25,18 @@ export class CustomHttp extends Http {
         return this.intercept(super.put(url, body, this.getRequestOptionArgs(options)));
     }
     delete(url: string, options ? : RequestOptionsArgs): Observable < Response > {
-        return this.intercept(super.delete(url, options));
+        var observable = super.get(url, options);
+        console.log(options)
+        // this._pubsub.showPupup.emit("确认要删除吗？");
+        // observable.subscribe(null, (err) => {
+        //     console.log('err');
+        //     // this._pubsub.afterRequest.emit("afterRequestEvent");
+        //     this.handleError(err.status);
+        // }, () => {
+        //     console.log('complete');
+        //     this._pubsub.afterRequest.emit("afterRequestEvent");
+        // });
+        return observable;
     }
     getRequestOptionArgs(options ? : RequestOptionsArgs): RequestOptionsArgs {
         if (options == null) {
@@ -38,23 +49,20 @@ export class CustomHttp extends Http {
         return options;
     }
     intercept(observable: Observable < Response > ): Observable < Response > {
-        this._loading.beforeRequest.emit("beforeRequestEvent")
+        this._pubsub.beforeRequest.emit("beforeRequestEvent")
         observable.subscribe(null, (err) => {
-                    console.error(err);
-                    this._loading.afterRequest.emit("afterRequestEvent");
-                }, () => {
-                    console.log('complete');
-                    this._loading.afterRequest.emit("afterRequestEvent");
-                });
+            console.log('err');
+            this._pubsub.afterRequest.emit("afterRequestEvent");
+            this.handleError(err.status);
+        }, () => {
+            console.log('complete');
+            this._pubsub.afterRequest.emit("afterRequestEvent");
+        });
         return observable;
-      
-        // observable
-        // .toPromise()
-        // .catch(err => {
-        //     console.log(err.status);
-        //     return Observable.throw(err);
-        // })
-        // this._loading.beforeRequest.emit("beforeRequestEvent")
-        // return observable.do(() => this._loading.afterRequest.emit("afterRequestEvent"));
+    }
+    handleError(status) {
+        if(status === 404) {
+            this._pubsub.errorToast.emit("404 Error");
+        }
     }
 }

@@ -10,12 +10,13 @@ import { CrisisCenterComponent } from './crisis/crisis-center.component';
 import { MapComponent } from './map/map.component';
 import { CustomHttp } from './customhttp';
 import { MapService } from './map/map.service';
-import { PubSubService } from './pubsubService';
-import { LoadingService } from './shared/loading.service';
-import { LoadingComponent } from './shared/loading.component';
+
+import { PubSubService } from './shared/pubsub.service';
+
+import { PubSubComponent } from './shared/pubsub.component';
 @NgModule({
     declarations: [
-        AppComponent, CrisisCenterComponent, MapComponent, LoadingComponent
+        AppComponent, CrisisCenterComponent, MapComponent, PubSubComponent
     ],
     imports: [
         BrowserModule,
@@ -26,10 +27,12 @@ import { LoadingComponent } from './shared/loading.component';
     ],
     providers: [
         MapService,
-        LoadingService, {
+        PubSubService, {
             provide: Http,
-            useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, loading: LoadingService) => new CustomHttp(backend, defaultOptions, loading),
-            deps: [XHRBackend, RequestOptions, LoadingService]
+            useFactory: (backend: XHRBackend, 
+                defaultOptions: RequestOptions, 
+                pubsub: PubSubService) => new CustomHttp(backend, defaultOptions, pubsub),
+            deps: [XHRBackend, RequestOptions, PubSubService]
         }
     ],
     bootstrap: [AppComponent],

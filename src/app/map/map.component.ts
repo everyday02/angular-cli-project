@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { MapService } from './map.service';
-import {PubSubService} from '../pubsubService';
-import { LoadingService } from '../shared/loading.service';
+import { PubSubService } from '../shared/pubsub.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 declare var BMap;
@@ -15,34 +14,27 @@ declare var BMap;
 export class MapComponent implements OnInit{
 
 	users;
-	  // showLoader = false;
-	  // _pubsub:PubSubService;
-	  // _loading: LoadingService;
+
+	  _pubsub: PubSubService;
 	  
-	  constructor(public http:Http) {
+	  constructor(public http:Http, pubsub: PubSubService) {
+	  	this._pubsub = pubsub;
 	  }
 	   ngOnInit() {
-	     // this._pubsub.beforeRequest.subscribe(data => this.showLoader = true);
-	     // this._pubsub.afterRequest.subscribe(data => this.showLoader = false);
-	     // this._loading.beforeRequest.subscribe(data => this.showLoader = true);
-	     // this._loading.afterRequest.subscribe(data => this.showLoader = false);
+
 	     
 	    this.reload();
 	    
 	  }
 	  // Declaring the variable for binding with initial value
 	  yourName: string = 'Dynamic Request Loader';
-	  
+	  showToast() {
+                        this._pubsub.errorToast.emit("404 ErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorError");
+	  	
+	  }
 	  reload() {
+	  	
 	      this.http.request('http://jsonplaceholder.typicode.com/userss')
-	      	// .toPromise()
-	      	// .then(response => {
-	      	// 	console.log(response.json());
-	      	// 	this.users = response.json();
-	      	// })
-	      	// .catch(err => {
-	      	// 	console.log(err)
-	      	// });
 
 	        .map(res => res.json())
 	        .subscribe(
@@ -53,7 +45,27 @@ export class MapComponent implements OnInit{
 	          err => console.log(err),
 	          () => console.log('Get Users Complete')
 	        );  
-	  
+
+	  }
+	  deleteData() {
+	  	let req = {
+	  		name: "jiangbo"
+	  	}
+	  	this._pubsub.confirm.subscribe(data => {
+	  		alert(data);
+	  	})
+	  	this._pubsub.showPupup.emit("value");
+	  	this.http.delete('http://jsonplaceholder.typicode.com/userss', {body: JSON.stringify(req)})
+
+	        .map(res => res.json())
+	        .subscribe(
+	          data => { 
+	          	this.users = data;
+	          	console.log(data);
+	          },
+	          err => console.log(err),
+	          () => console.log('Get Users Complete')
+	        );  
 	  }
 
 

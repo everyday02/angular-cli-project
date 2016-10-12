@@ -1,0 +1,18 @@
+<!-- errorToast -->
+<div *ngIf="showErrorToast" class="toast-error-box">
+	<div class="toast-item toast-error-item">{{errorValue}}</div>
+</div>
+<div *ngIf="showSuccessToast" class="toast-success-box">
+	<div class="toast-item toast-error-item">{{successValue}}</div>
+</div>
+<!-- loading -->
+<div *ngIf="showloading" class="loading-box">
+	<div class="load-container load6">
+			<div class="loader">Loading...</div>
+		</div>
+</div>
+<!-- pupup -->
+<div *ngIf="showPupub" class="pupup-box">
+	<button type="button" (click)="confirm()">确定</button>
+	<button type="button" (click)="cancel()">取消</button>
+</div>
