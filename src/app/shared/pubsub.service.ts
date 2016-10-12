@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-
+// 发布订阅事件, 继承自Subject, emit用于发射事件
 class PubSubEvent extends Subject < String > {
     constructor() {
         super();
